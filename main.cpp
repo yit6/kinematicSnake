@@ -56,6 +56,7 @@ int main()
         }
 
         player.move(playerSpeed);
+        player.setPosition((sf::Vector2f)sf::Mouse::getPosition(window));
 
         lines[0].position = player.getPosition();
         for (int i = 1; i < bodyLength; i++) {
