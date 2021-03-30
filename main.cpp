@@ -6,6 +6,7 @@
 int main()
 {
     float speed = 5;
+    bool reachedMouse = false;
 
     sf::RenderWindow window(sf::VideoMode(800,800, 32), "first",sf::Style::Titlebar | sf::Style::Close);
 
@@ -36,8 +37,7 @@ int main()
                 window.close();
                 break;
             }
-         }
-
+         }        
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
         {
             playerSpeed = sf::Vector2f(0,-speed);
@@ -55,8 +55,26 @@ int main()
             playerSpeed = sf::Vector2f(speed,0);
         }
 
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+        {
+            if (!reachedMouse)
+            {
+                playerSpeed = (sf::Vector2f)sf::Mouse::getPosition(window)-player.getPosition();
+                float mag = sqrt(playerSpeed.x*playerSpeed.x + playerSpeed.y*playerSpeed.y);
+                playerSpeed *= speed;
+                if (mag < speed)
+                {
+                    reachedMouse = true;
+                }
+                playerSpeed /= mag;
+            }
+        }
+        else
+        {
+            reachedMouse = false;
+        }
+
         player.move(playerSpeed);
-        player.setPosition((sf::Vector2f)sf::Mouse::getPosition(window));
 
         lines[0].position = player.getPosition();
         for (int i = 1; i < bodyLength; i++) {
