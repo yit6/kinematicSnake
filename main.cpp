@@ -13,7 +13,10 @@ int main()
     bool gameIsOver = false;
     float newSegments = 100;
 
-    sf::RenderWindow window(sf::VideoMode(800,800, 32), "Kinematic Snake",sf::Style::Default);
+    sf::ContextSettings settings;
+    settings.antialiasingLevel = 8.0;
+
+    sf::RenderWindow window(sf::VideoMode(800,800, 32), "Kinematic Snake",sf::Style::Fullscreen, settings);
 
     sf::CircleShape apple;
     apple.setRadius(10);
@@ -108,7 +111,7 @@ int main()
             }
         }
 
-        if (player.getPosition().x < 0 || player.getPosition().x > 800 || player.getPosition().y > 800 || player.getPosition().y < 0)
+        if (player.getPosition().x < 0 || player.getPosition().x > window.getSize().x || player.getPosition().y > window.getSize().y || player.getPosition().y < 0)
         {
             gameIsOver = true;
         }
