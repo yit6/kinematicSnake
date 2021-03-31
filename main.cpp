@@ -14,14 +14,13 @@ int main()
     float newSegments = 100;
 
     sf::ContextSettings settings;
-    settings.antialiasingLevel = 8.0;
 
     sf::RenderWindow window(sf::VideoMode(800,800, 32), "Kinematic Snake",sf::Style::Fullscreen, settings);
 
     sf::CircleShape apple;
     apple.setRadius(10);
     apple.setFillColor(sf::Color::Red);
-    apple.setPosition(rand()%800,rand()%800);
+    apple.setPosition(rand()%window.getSize().x,rand()%window.getSize().y);
     apple.setOrigin(10,10);
 
     sf::CircleShape player;
