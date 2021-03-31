@@ -13,7 +13,7 @@ int main()
     bool gameIsOver = false;
     float newSegments = 100;
 
-    sf::RenderWindow window(sf::VideoMode(800,800, 32), "first",sf::Style::Titlebar | sf::Style::Close);
+    sf::RenderWindow window(sf::VideoMode(800,800, 32), "Kinematic Snake",sf::Style::Default);
 
     sf::CircleShape apple;
     apple.setRadius(10);
@@ -70,7 +70,7 @@ int main()
         {
             if (!reachedMouse)
             {
-                playerSpeed = (sf::Vector2f)sf::Mouse::getPosition(window)-player.getPosition();
+                playerSpeed = window.mapPixelToCoords(sf::Mouse::getPosition(window))-player.getPosition();
                 float mag = sqrt(playerSpeed.x*playerSpeed.x + playerSpeed.y*playerSpeed.y);
                 playerSpeed *= speed;
                 if (mag < speed)
