@@ -1,8 +1,9 @@
 #include<SFML/Graphics.hpp>
 
-float bodyResolution = 1;
-float bodyLength = 1000;
+
 
 int main();
 
-sf::Vector2f attach(sf::Vector2f head, sf::Vector2f tail);
+sf::Vector2f attach(sf::Vector2f head, sf::Vector2f tail,float length);
+
+float distance(sf::Vector2f A, sf::Vector2f B);

@@ -1,4 +1,5 @@
 #include<SFML/Graphics.hpp>
+#include<stdlib.h>
 #include<math.h>
 
 #include"main.hpp"
@@ -7,14 +8,23 @@ int main()
 {
     float speed = 5;
     bool reachedMouse = false;
+    float bodyResolution = 1;
+    float bodyLength = 200;
+    bool gameIsOver = false;
 
     sf::RenderWindow window(sf::VideoMode(800,800, 32), "first",sf::Style::Titlebar | sf::Style::Close);
+
+    sf::CircleShape apple;
+    apple.setRadius(10);
+    apple.setFillColor(sf::Color::Red);
+    apple.setPosition(rand()%800,rand()%800);
+    apple.setOrigin(10,10);
 
     sf::CircleShape player;
     player.setRadius(5);
     player.setOrigin(sf::Vector2f(5,5));
     player.setPosition(sf::Vector2f(400,400));
-    player.setFillColor(sf::Color::Red);
+    player.setFillColor(sf::Color::Green);
 
     sf::Vector2f playerSpeed(0,0);
 
@@ -32,7 +42,7 @@ int main()
          while(window.pollEvent(event))
          {
              if ((event.type == sf::Event::Closed) ||
-               ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape)))
+               ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape))||gameIsOver)
             {
                 window.close();
                 break;
@@ -75,10 +85,30 @@ int main()
         }
 
         player.move(playerSpeed);
+        for (int i = 0; i < bodyLength; i++)
+        {
+            if (distance(lines[i].position,apple.getPosition()) < 10)
+            {
+                apple.setPosition(rand()%800,rand()%800);
+                for (int i = bodyLength; i < bodyLength+200; i++)
+                {
+                    lines.append(sf::Vertex(lines[i].position-lines[i-1].position));
+                }
+                bodyLength+=200;
+                break;
+            }
+        }
+
+        for (int i = 50; i < bodyLength; i++) {
+            if (distance(lines[i].position,lines[0].position) < 5)
+            {
+                gameIsOver = true;
+            }
+        }
 
         lines[0].position = player.getPosition();
         for (int i = 1; i < bodyLength; i++) {
-            lines[i].position = attach(lines[i-1].position,lines[i].position);
+            lines[i].position = attach(lines[i-1].position,lines[i].position,bodyResolution);
         }
         //lines[1].position = attach(lines[0].position,lines[1].position);
 
@@ -88,13 +118,21 @@ int main()
 
         window.draw(player);
 
+        window.draw(apple);
+
         window.display();
      }
     return 0;
 }
 
-sf::Vector2f attach(sf::Vector2f head, sf::Vector2f tail)
+sf::Vector2f attach(sf::Vector2f head, sf::Vector2f tail,float length)
 {
     float ang = atan2((head-tail).y,(head-tail).x);
-    return sf::Vector2f(head.x-bodyResolution*cos(ang),head.y-bodyResolution*sin(ang));
+    return sf::Vector2f(head.x-length*cos(ang),head.y-length*sin(ang));
+}
+
+float distance(sf::Vector2f A, sf::Vector2f B)
+{
+    sf::Vector2f dist = A-B;
+    return sqrt(dist.x*dist.x + dist.y*dist.y);
 }
