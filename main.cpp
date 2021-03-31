@@ -11,6 +11,7 @@ int main()
     float bodyResolution = 1;
     float bodyLength = 200;
     bool gameIsOver = false;
+    float newSegments = 100;
 
     sf::RenderWindow window(sf::VideoMode(800,800, 32), "first",sf::Style::Titlebar | sf::Style::Close);
 
@@ -90,12 +91,12 @@ int main()
             if (distance(lines[i].position,apple.getPosition()) < 10)
             {
                 apple.setPosition(rand()%800,rand()%800);
-                for (int i = bodyLength; i < bodyLength+200; i++)
+                sf::Vector2f end = lines[bodyLength-1].position;
+                for (int i = 0; i < newSegments; i++)
                 {
-                    //lines.append(sf::Vertex(lines[i].position-lines[i-1].position));
-                    lines.append(sf::Vector2f(0,0));
+                    lines.append(end);
                 }
-                bodyLength+=200;
+                bodyLength+=newSegments;
                 break;
             }
         }
