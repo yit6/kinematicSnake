@@ -43,7 +43,7 @@ int main()
          while(window.pollEvent(event))
          {
              if ((event.type == sf::Event::Closed) ||
-               ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape))||gameIsOver)
+               ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape)))
             {
                 window.close();
                 break;
@@ -108,6 +108,11 @@ int main()
             }
         }
 
+        if (player.getPosition().x < 0 || player.getPosition().x > 800 || player.getPosition().y > 800 || player.getPosition().y < 0)
+        {
+            gameIsOver = true;
+        }
+
         lines[0].position = player.getPosition();
         for (int i = 1; i < bodyLength; i++) {
             lines[i].position = attach(lines[i-1].position,lines[i].position,bodyResolution);
@@ -123,6 +128,11 @@ int main()
         window.draw(apple);
 
         window.display();
+
+        if (gameIsOver)
+        {
+            window.close();
+        }
      }
     return 0;
 }
