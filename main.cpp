@@ -92,14 +92,15 @@ int main()
                 apple.setPosition(rand()%800,rand()%800);
                 for (int i = bodyLength; i < bodyLength+200; i++)
                 {
-                    lines.append(sf::Vertex(lines[i].position-lines[i-1].position));
+                    //lines.append(sf::Vertex(lines[i].position-lines[i-1].position));
+                    lines.append(sf::Vector2f(0,0));
                 }
                 bodyLength+=200;
                 break;
             }
         }
 
-        for (int i = 50; i < bodyLength; i++) {
+        for (int i = 20; i < bodyLength; i++) {
             if (distance(lines[i].position,lines[0].position) < 5)
             {
                 gameIsOver = true;
