@@ -1,6 +1,7 @@
 #include<SFML/Graphics.hpp>
 #include<stdlib.h>
 #include<math.h>
+#include<iostream>
 
 #include"main.hpp"
 
@@ -15,7 +16,7 @@ int main()
 
     sf::ContextSettings settings;
 
-    sf::RenderWindow window(sf::VideoMode(800,800, 32), "Kinematic Snake",sf::Style::Fullscreen, settings);
+    sf::RenderWindow window(sf::VideoMode(800,800, 32), "Kinematic Snake",sf::Style::Default, settings);
 
     sf::CircleShape apple;
     apple.setRadius(10);
@@ -41,6 +42,7 @@ int main()
     window.setVerticalSyncEnabled(true);
     while(window.isOpen())
      {
+         std::cout << sf::Joystick::getAxisPosition(0,static_cast<sf::Joystick::Axis>(1))<<std::endl;
          sf::Event event;
          while(window.pollEvent(event))
          {
@@ -87,12 +89,22 @@ int main()
             reachedMouse = false;
         }
 
+        float joyX = sf::Joystick::getAxisPosition(0,static_cast<sf::Joystick::Axis>(0))/100;
+        float joyY = sf::Joystick::getAxisPosition(0,static_cast<sf::Joystick::Axis>(1))/100;
+
+        float mag = sqrt(joyX*joyX+joyY*joyY);
+
+        if (mag > .5)
+        {
+            playerSpeed = sf::Vector2f(joyX,joyY)*speed/mag;
+        }
+
         player.move(playerSpeed);
         for (int i = 0; i < bodyLength; i++)
         {
             if (distance(lines[i].position,apple.getPosition()) < 10)
             {
-                apple.setPosition(rand()%800,rand()%800);
+                apple.setPosition(rand()%window.getSize().x,rand()%window.getSize().y);
                 sf::Vector2f end = lines[bodyLength-1].position;
                 for (int i = 0; i < newSegments; i++)
                 {
