@@ -42,7 +42,6 @@ int main()
     window.setVerticalSyncEnabled(true);
     while(window.isOpen())
      {
-         std::cout << sf::Joystick::getAxisPosition(0,static_cast<sf::Joystick::Axis>(1))<<std::endl;
          sf::Event event;
          while(window.pollEvent(event))
          {
